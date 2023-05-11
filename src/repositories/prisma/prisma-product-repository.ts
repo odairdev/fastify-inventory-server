@@ -11,6 +11,15 @@ export class PrismaProductRepository implements IProductsRepository {
     return product
   }
 
+  async fetchProducts(page: number): Promise<Product[]> {
+    const products = await prisma.product.findMany({
+      take: 50,
+      skip: (page - 1) * 50
+    })
+
+    return products
+  }
+
   async findById(productId: string): Promise<Product | null> {
     const product = await prisma.product.findUnique({
       where: {
