@@ -11,6 +11,17 @@ export class PrismaProductRepository implements IProductsRepository {
     return product
   }
 
+  async updateProduct(product: Prisma.ProductUncheckedCreateInput): Promise<Product> {
+    const newProduct = await prisma.product.update({
+      where: {
+        id: product.id
+      },
+      data: product
+    })
+
+    return newProduct
+  }
+
   async fetchProducts(page: number): Promise<Product[]> {
     const products = await prisma.product.findMany({
       take: 50,
@@ -18,6 +29,14 @@ export class PrismaProductRepository implements IProductsRepository {
     })
 
     return products
+  }
+
+  async delete(productId: string): Promise<void> {
+    await prisma.product.delete({
+      where: {
+        id: productId
+      }
+    })
   }
 
   async findById(productId: string): Promise<Product | null> {

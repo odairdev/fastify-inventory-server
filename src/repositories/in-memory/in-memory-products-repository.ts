@@ -7,7 +7,7 @@ export class InMemoryProductsRepository implements IProductsRepository {
 
   async create(data: Prisma.ProductCreateInput): Promise<Product> {
     const product = {
-      id: randomUUID(),
+      id: data.id ? data.id : randomUUID(),
       name: data.name,
       amount: data.amount,
       category: data.category,
@@ -25,6 +25,16 @@ export class InMemoryProductsRepository implements IProductsRepository {
     return products
   }
 
+  async updateProduct(product: Product): Promise<Product> {
+    const productIndex = this.db.findIndex(p => p.id === product.id)
+
+    if(productIndex >= 0) {
+      this.db[productIndex] = product
+    }
+
+    return this.db[productIndex]
+  }
+
   async findById(productId: string): Promise<Product | null> {
     const product = this.db.find(product => product.id === productId) ?? null
 
@@ -35,5 +45,10 @@ export class InMemoryProductsRepository implements IProductsRepository {
     const product = this.db.find(product => product.name === productName) ?? null
 
     return product
+  }
+
+  async delete(productId: string): Promise<void> {
+    const productIndex = this.db.findIndex(product => product.id === productId)
+    this.db.splice(productIndex, 1)
   }
 }

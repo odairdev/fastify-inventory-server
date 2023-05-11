@@ -1,7 +1,9 @@
 import { createProduct } from "@/http/controllers/createProduct";
-import { readProducts } from "@/http/controllers/readProducts";
+import { ParamsType, deleteProduct } from "@/http/controllers/deleteProducts";
+import { QueryType, readProducts } from "@/http/controllers/readProducts";
+import { updateProduct } from "@/http/controllers/updateProduct";
 import { verifyJWT } from "@/http/middlewares/verify-jwt";
-import { FastifyInstance, IQueryString } from "fastify";
+import { FastifyInstance } from "fastify";
 
 export async function ProductsRoutes(app: FastifyInstance) {
   // Authenticated Routes
@@ -9,7 +11,15 @@ export async function ProductsRoutes(app: FastifyInstance) {
     onRequest: verifyJWT
   }, createProduct)
 
-  app.get('/', {
+  app.put('/', {
+    onRequest: verifyJWT
+  }, updateProduct)
+
+  app.get<{ Querystring: QueryType }>('/', {
     onRequest: verifyJWT
   }, readProducts)
+
+  app.delete<{ Params: ParamsType }>('/:id', {
+    onRequest: verifyJWT
+  }, deleteProduct)
 }

@@ -1,7 +1,7 @@
 import { makeGetProducts } from "@/use-cases/factories/makeGetProducts";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-interface QueryType {
+export interface QueryType {
   page: number
 }
 
