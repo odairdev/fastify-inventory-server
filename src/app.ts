@@ -3,6 +3,7 @@ import { UsersRoutes } from "./routes/users";
 import { ZodError } from "zod";
 import { env } from "./env";
 import fastifyJwt from "@fastify/jwt";
+import { ProductsRoutes } from "./routes/products";
 
 const app = fastify()
 
@@ -12,6 +13,9 @@ app.register(fastifyJwt, {
 
 app.register(UsersRoutes, {
   prefix: '/users'
+})
+app.register(ProductsRoutes, {
+  prefix: '/products'
 })
 
 app.setErrorHandler((error, request, reply) => {
