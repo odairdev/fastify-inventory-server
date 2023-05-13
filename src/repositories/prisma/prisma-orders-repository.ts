@@ -9,6 +9,25 @@ export class PrismaInventoryOrdersRepository implements IInventoryOrdersReposito
     return order
   }
 
+  async findManyOrders(page: number): Promise<InventoryOrder[]> {
+    const orders = await prisma.inventoryOrder.findMany({
+      take: 50,
+      skip: (page - 1) * 50
+    })
+
+    return orders
+  }
+
+  async findById(orderId: string): Promise<InventoryOrder | null> {
+    const order = await prisma.inventoryOrder.findUnique({
+      where: {
+        id: orderId
+      }
+    })
+
+    return order
+  }
+
   async delete(orderId: string): Promise<void> {
      await prisma.inventoryOrder.delete({
       where: {

@@ -19,6 +19,18 @@ export class InMemoryInventoryOrdersRepository implements IInventoryOrdersReposi
     return order
   }
 
+  async findManyOrders(page: number): Promise<InventoryOrder[]> {
+    const orders = this.db.slice((page - 1) * 50, page * 50)
+
+    return orders
+  }
+
+  async findById(orderId: string): Promise<InventoryOrder | null> {
+    const order = this.db.find(o => o.id === orderId) ?? null
+
+    return order
+  }
+
   async delete(orderId: string): Promise<void> {
     const orderIndex = this.db.findIndex(order => orderId === order.id)
 
