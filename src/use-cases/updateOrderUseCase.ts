@@ -1,8 +1,8 @@
 import { IInventoryOrdersRepository } from "@/repositories/IInventoryOrdersRepository";
 import { IProductsRepository } from "@/repositories/IProductsRepository";
-import { InventoryOrder } from "@prisma/client";
 import { ResourceNotFoundError } from "./errors/resource-not-found";
 import { OrderCannotBeUpdatedError } from "./errors/OrderCannotBeUpdatedError";
+import { Prisma } from "@prisma/client";
 
 export class UpdateOrderUseCase {
   constructor(
@@ -10,7 +10,11 @@ export class UpdateOrderUseCase {
     private inventoryOrdersRepository: IInventoryOrdersRepository
   ) {}
 
-  async execute(order: InventoryOrder) {
+  async execute(order: Prisma.InventoryOrderUncheckedCreateInput) {
+    if(!order.id) {
+      throw new Error('Order id null or undefined.')
+    }
+
     const doesOrderExist = await this.inventoryOrdersRepository.findById(
       order.id
     );
