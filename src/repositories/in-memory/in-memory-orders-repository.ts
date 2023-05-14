@@ -31,6 +31,17 @@ export class InMemoryInventoryOrdersRepository implements IInventoryOrdersReposi
     return order
   }
 
+  async update(order: Prisma.InventoryOrderUncheckedCreateInput): Promise<Prisma.InventoryOrderUncheckedCreateInput> {
+    const orderIndex = this.db.findIndex(o => o.id === order.id)
+
+    // @ts-ignore
+    this.db[orderIndex] = {
+      ...order
+    }
+
+    return order
+  }
+
   async delete(orderId: string): Promise<void> {
     const orderIndex = this.db.findIndex(order => orderId === order.id)
 

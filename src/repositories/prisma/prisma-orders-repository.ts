@@ -28,6 +28,17 @@ export class PrismaInventoryOrdersRepository implements IInventoryOrdersReposito
     return order
   }
 
+  async update(order: Prisma.InventoryOrderUncheckedCreateInput): Promise<InventoryOrder> {
+    const newOrder = await prisma.inventoryOrder.update({
+      where: {
+        id: order.id
+      },
+      data: order
+    })
+
+    return newOrder
+  }
+
   async delete(orderId: string): Promise<void> {
      await prisma.inventoryOrder.delete({
       where: {
