@@ -14,7 +14,7 @@
     <img alt="Made by" src="https://img.shields.io/badge/Made%20by-odairdev-blue">
   </a>
 
-  <img alt="GitHub" src="https://github.com/odairdev/fastify-inventory-server?style=plastic">
+  <img alt="GitHub" src="https://img.shields.io/github/release-date/odairdev/fastify-inventory-server?style=plastic">
 
 </p>
 
