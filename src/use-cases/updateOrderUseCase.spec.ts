@@ -8,7 +8,7 @@ let inMemoryProductsRepository: InMemoryProductsRepository;
 let inMemoryInventoryOrdersRepository: InMemoryInventoryOrdersRepository;
 let sut: UpdateOrderUseCase;
 
-describe("Delete Iventory Order Use Case", () => {
+describe("Update Iventory Order Use Case", () => {
   beforeEach(async () => {
     inMemoryProductsRepository = new InMemoryProductsRepository();
     inMemoryInventoryOrdersRepository = new InMemoryInventoryOrdersRepository();

@@ -11,8 +11,8 @@ export class UpdateOrderUseCase {
   ) {}
 
   async execute(order: Prisma.InventoryOrderUncheckedCreateInput) {
-    if(!order.id) {
-      throw new Error('Order id null or undefined.')
+    if (!order.id) {
+      throw new Error("Order id null or undefined.");
     }
 
     const doesOrderExist = await this.inventoryOrdersRepository.findById(
@@ -31,15 +31,13 @@ export class UpdateOrderUseCase {
       throw new ResourceNotFoundError();
     }
 
-    //CHECK IF TYPE CHANGED
-
-    if(order.type === doesOrderExist.type) {
+    if (order.type === doesOrderExist.type) {
       if (order.type === "in") {
         if (order.amount < previousOrderAmount) {
           const difference = previousOrderAmount - order.amount;
           if (product.amount - difference >= 0) {
-            this.inventoryOrdersRepository.update(order);
-            this.productsRepository.updateProduct({
+            await this.inventoryOrdersRepository.update(order);
+            await this.productsRepository.updateProduct({
               ...product,
               amount: product.amount - difference,
             });
@@ -47,9 +45,10 @@ export class UpdateOrderUseCase {
             throw new OrderCannotBeUpdatedError();
           }
         } else {
+          console.log('aqui')
           const difference = order.amount - previousOrderAmount;
-          this.inventoryOrdersRepository.update(order);
-          this.productsRepository.updateProduct({
+          await this.inventoryOrdersRepository.update(order);
+          await this.productsRepository.updateProduct({
             ...product,
             amount: product.amount + difference,
           });
@@ -58,38 +57,41 @@ export class UpdateOrderUseCase {
         if (order.amount > previousOrderAmount) {
           const difference = order.amount - previousOrderAmount;
           if (product.amount - difference >= 0) {
-            this.inventoryOrdersRepository.update(order);
-            this.productsRepository.updateProduct({
+            await this.inventoryOrdersRepository.update(order);
+            await this.productsRepository.updateProduct({
               ...product,
               amount: product.amount - difference,
             });
           } else {
+          console.log('erro?')
+
             throw new OrderCannotBeUpdatedError();
           }
-        }  else {
-          const difference = previousOrderAmount - order.amount
-          this.inventoryOrdersRepository.update(order);
-          this.productsRepository.updateProduct({
+        } else {
+          const difference = previousOrderAmount - order.amount;
+          await this.inventoryOrdersRepository.update(order);
+          await this.productsRepository.updateProduct({
             ...product,
             amount: product.amount + difference,
           });
         }
       }
     } else {
-      if(order.type === 'in') {
-        const finalAmountTobeAddedToProduct = previousOrderAmount + order.amount
-        this.inventoryOrdersRepository.update(order);
-          this.productsRepository.updateProduct({
-            ...product,
-            amount: product.amount + finalAmountTobeAddedToProduct,
-          });
+      if (order.type === "in") {
+        const finalAmountTobeAddedToProduct =
+          previousOrderAmount + order.amount;
+        await this.inventoryOrdersRepository.update(order);
+        await this.productsRepository.updateProduct({
+          ...product,
+          amount: product.amount + finalAmountTobeAddedToProduct,
+        });
       } else {
-        const amountToBeTakenOutOfProduct = order.amount + previousOrderAmount
-        if(product.amount - amountToBeTakenOutOfProduct < 0) {
-          throw new OrderCannotBeUpdatedError()
+        const amountToBeTakenOutOfProduct = order.amount + previousOrderAmount;
+        if (product.amount - amountToBeTakenOutOfProduct < 0) {
+          throw new OrderCannotBeUpdatedError();
         } else {
-          this.inventoryOrdersRepository.update(order);
-          this.productsRepository.updateProduct({
+          await this.inventoryOrdersRepository.update(order);
+          await this.productsRepository.updateProduct({
             ...product,
             amount: product.amount - amountToBeTakenOutOfProduct,
           });
