@@ -73,13 +73,16 @@ $ git clone https://github.com/odairdev/fastify-inventory-server
 
 ```bash
 # Install the dependencies
-$ nom install
+$ npm install
 
 # Create the Database Docker Container
 $ docker-compose up -d --build
 
 # Run Prisma ORM migrations
 $ npx migrate dev
+
+# Start server
+$ npm run dev
 
 # To stop DB container
 $ docker-compose stop
@@ -100,7 +103,7 @@ $ npm install
 # Run TypeORM migrations
 $ npx miragte dev
 
-# Start the app
+# Start server
 $ npm run dev
 
 # Well done, project is running!
