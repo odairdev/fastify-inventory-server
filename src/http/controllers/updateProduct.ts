@@ -31,7 +31,7 @@ export async function updateProduct(
     const updateProductInfoUseCase = makeUpdateProductInfoUseCase();
     const newProduct = await updateProductInfoUseCase.execute(product);
 
-    return reply.status(204).send(newProduct);
+    return reply.status(200).send(newProduct);
   } catch (err) {
     if (
       err instanceof ResourceNotFoundError ||

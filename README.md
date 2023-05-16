@@ -14,8 +14,6 @@
     <img alt="Made by" src="https://img.shields.io/badge/Made%20by-odairdev-blue">
   </a>
 
-  <img alt="GitHub" src="https://img.shields.io/github/release-date/odairdev/fastify-inventory-server?style=plastic">
-
 </p>
 
 <p align="center">
@@ -83,6 +81,9 @@ $ npx migrate dev
 
 # Start server
 $ npm run dev
+
+# Run all server unit tests
+$ npm run test
 
 # To stop DB container
 $ docker-compose stop

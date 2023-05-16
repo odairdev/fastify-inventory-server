@@ -23,10 +23,10 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
       }
     })
 
-    return {
+    return reply.status(200).send({
       user,
       token
-    }
+    })
   }catch(err) {
     if(err instanceof AuthenticationError) {
       return reply.status(403).send({ message: err.message})
